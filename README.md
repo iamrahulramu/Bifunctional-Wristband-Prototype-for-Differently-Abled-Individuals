@@ -82,6 +82,7 @@ In order to implement the prototype and verify its functionalities, follow the s
 
 ### On the Wristband ESP32 Board  
 1. Connect the peripherals - OLED display module, RTC module, miniature vibration motor and pushbuttons - to the ESP32 Pico Kit (used as the wristband controller) according to the pin configuration provided below:
+
     | ESP32 Pin                   | Connected Component           | Component Pin     |
     | --------------------------- | ----------------------------- | ----------------- |
     | 21                          | OLED Display Module (SSD1306) | SDA               |
@@ -101,16 +102,19 @@ In order to implement the prototype and verify its functionalities, follow the s
     | 26                          | Pushbutton (Minute)           | Output            |
     | 20                          | Pushbutton (Cook)             | Output            |    
     | 7                           | Pushbutton (Sleep)            | Output            |
+    
 2. Connect the ESP32 Pico Kit to your computer and select the appropriate board and ``COM`` port from the ``Tools`` menu in the  ``Arduino IDE``. 
 3. Upload the wristband source code from [`Implementation/wristband.ino`](Implementation/wristband.ino) to the ESP32 board.
 
 ### On the Detector ESP32 Board  
 1. Connect the sound detection sensor module to the ESP32 Pico Kit (used for the detector device) as described below:
+
     | ESP32 Pin                   | Connected Component           | Component Pin     |
     | --------------------------- | ----------------------------- | ----------------- |
     | 34                          | Sound Detection Sensor Module | OUT               |
     | 5V                          |                               | VCC               |
     | GND                         |                               | GND               |
+
 2. Connect the ESP32 Pico Kit to your computer and select the appropriate board and ``COM`` port from the ``Tools`` menu in the ``Arduino IDE``. 
 3. Upload the detector device source code from [`Implementation/detector.ino`](Implementation/detector.ino) to the ESP32 board.
 
