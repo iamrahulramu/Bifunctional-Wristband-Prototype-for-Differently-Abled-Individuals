@@ -85,11 +85,11 @@ In order to implement the prototype and verify its functionalities, follow the s
 
     | ESP32 Pin                   | Connected Component           | Component Pin     |
     | --------------------------- | ----------------------------- | ----------------- |
-    | 21                          | OLED Display Module (SSD1306) | SDA               |
+    | 21                          | OLED Display Module           | SDA               |
     | 22                          |                               | SCL/SCK           |
     | 3V3                         |                               | VCC               |
     | GND                         |                               | GND               |
-    | 21                          | RTC Module (DS3231)           | SDA               |
+    | 21                          | RTC Module                    | SDA               |
     | 22                          |                               | SCL/SCK           |
     | 3V3                         |                               | VCC               |
     | GND                         |                               | GND               |
@@ -245,4 +245,4 @@ This project was developed between May 2024 and July 2024 as part of my internsh
 ---
 
 ## License
-This project is licensed under the terms specified in the [LICENSE](#LICENSE) file **(MIT License)**.
+This project is licensed under the terms specified in the [LICENSE](LICENSE) file **(MIT License)**.
