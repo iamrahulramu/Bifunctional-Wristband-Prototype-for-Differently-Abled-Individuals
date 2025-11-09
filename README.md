@@ -34,15 +34,15 @@ This project presents a bifunctional wristband prototype aimed at supporting dif
 ## Hardware Components
 This section lists the necessary hardware components used to develop this prototype, along with their functionalities.
 
-| Component                       | Function                                                                |
-|---------------------------------|-------------------------------------------------------------------------|
-| ESP32 Pico Kit (x2)             | Main controller for both the wristband and the detector                 |
-| OLED Display (128 x 32, I2C)    | To display necessary information to the user                            |
-| DS3231 RTC Module               | To maintain accurate real-time tracking for timer operations            |
-| Sound Detection Sensor Module   | To detect cooker whistle sounds                                         |
-| Miniature Vibration Motor       | To provide tactile feedback to the user                                 |
-| Push Buttons                    | To accept user inputs for mode selection and setting the timer duration |
-| Breadboard, Jumper Wires, Power Supply | For circuit connections and power supply                                             |
+| Component                              | Function                                                                |
+|----------------------------------------|-------------------------------------------------------------------------|
+| ESP32 Pico Kit (x2)                    | Main controller for both the wristband and the detector                 |
+| OLED Display Module (128 x 32, I2C)    | To display necessary information to the user                            |
+| DS3231 RTC Module                      | To maintain accurate real-time tracking for timer operations            |
+| Sound Detection Sensor Module          | To detect cooker whistle sounds                                         |
+| Miniature Vibration Motor              | To provide tactile feedback to the user                                 |
+| Push Buttons                           | To accept user inputs for mode selection and setting the timer duration |
+| Breadboard, Jumper Wires, Power Supply | For circuit connections and power supply                                |
 
 ---
 
