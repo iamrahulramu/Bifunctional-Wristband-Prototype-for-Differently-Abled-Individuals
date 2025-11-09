@@ -34,25 +34,25 @@ This project presents a bifunctional wristband prototype aimed at supporting dif
 ## Hardware Components
 This section lists the necessary hardware components used to develop this prototype, along with their functionalities.
 
-| Component                              | Function                                                                |
-|----------------------------------------|-------------------------------------------------------------------------|
-| ESP32 Pico Kit (x2)                    | Main controller for both the wristband and the detector                 |
-| OLED Display Module (128 x 32, I2C)    | To display necessary information to the user                            |
-| DS3231 RTC Module                      | To maintain accurate real-time tracking for timer operations            |
-| Sound Detection Sensor Module          | To detect cooker whistle sounds                                         |
-| Miniature Vibration Motor              | To provide tactile feedback to the user                                 |
-| Push Buttons                           | To accept user inputs for mode selection and setting the timer duration |
-| Breadboard, Jumper Wires, Power Supply | For circuit connections and power supply                                |
+| Component                                  | Function                                                                |
+|--------------------------------------------|-------------------------------------------------------------------------|
+| ESP32 Pico Kit (x2)                        | Main controller for both the wristband and the detector                 |
+| OLED Display Module (SSD1306, 128x32, I2C) | To display necessary information to the user                            |
+| RTC Module (DS3231)                        | To maintain accurate real-time tracking for timer operations            |
+| Sound Detection Sensor Module              | To detect cooker whistle sounds                                         |
+| Miniature Vibration Motor                  | To alert the user through vibrations                                    |
+| Pushbuttons                                | To accept user inputs for selecting mode and setting the timer duration | 
+| Breadboard, Jumper Wires, Power Supply     | For circuit connections and power supply                                |
 
 ---
 
 ## Software Requirements
 To set up and run this project, ensure the following software tools and libraries are installed:
 - **Arduino IDE:** Version 1.8x or later (or Arduino CLI)
-- **Operating System:** Windows/ macOS / Linux
+- **Operating System:** Windows / macOS / Linux
 - **Required Board Package:** ESP32 Board Package (for programming the ESP32 Pico Kit). It can be installed by following the steps below: 
   - Open ``Arduino IDE`` → ``Preferences``.
-  - Add the following URL to the _Additional Board Manager URLs_:
+  - Add the following URL to the _Additional Board Manager URLs_ field:
     [https://dl.espressif.com/dl/package_esp32_index.json](https://dl.espressif.com/dl/package_esp32_index.json)
   - Then, open ``Tools`` → ``Board`` → ``Boards Manager``.
   - Search for ESP32 by _Espressif Systems_ and install it.
@@ -156,7 +156,7 @@ display.setCursor(0, 0);
 display.print(timeString);
 display.display();
 ```
-The OLED continuously updates the displayed time as the user adjusts hours and minutes. The *Reset* button allows clearing or returning to the initialization state (displaying "Hello").
+The OLED display continuously updates the displayed time as the user adjusts hours and minutes. The *Reset* button allows clearing or returning to the initialization state.
 
 **Timer and Deep Sleep Setup**
 ```cpp
@@ -164,14 +164,13 @@ if (digitalRead(setButton) == LOW) {
   DateTime now = rtc.now();
   DateTime timerTime = now + TimeSpan(0, hours, minutes, 0);
   rtc.setAlarm1(timerTime, DS3231_A1_Minute);
-  
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_14, 0);
   esp_deep_sleep_start();
 }
 ```
-When the *Set* button is pressed, the RTC module schedules a timer for the set duration. The ESP32 board then enters deep sleep mode to conserve power until the timer triggers, waking up through the interrupt pin (pin 14).
+In the *Timer* mode, when the *Set* button is pressed, the RTC module schedules a timer for the set duration. The ESP32 board then enters deep sleep mode to conserve power until the timer triggers, waking up through the interrupt pin (pin 14).
 
-**Receiving Notification via Bluetooth**
+**Receiving Notifications via Bluetooth**
 ```cpp
 void bluetoothNotification(){
   SerialBT.begin("ESP32receiver");
@@ -203,14 +202,13 @@ if (!SerialBT.begin("ESP32test", true)) {
   Serial.println("========== serialBT failed!");
   abort();
 }
-
 SerialBT.discoverAsync([](BTAdvertisedDevice *pDevice) {
   Serial.printf(">>>>>>>>>>>Found a new device asynchronously: %s\n", pDevice->toString().c_str());
 });
 ```
 The Bluetooth module runs in master mode, scanning for and automatically connecting to the wristband ESP32 board. The ``discoverAsync()`` function performs asynchronous device scanning, listing nearby ESP32 Bluetooth addresses.
 
-**Sound Detection and Bluetooth Alert Transmission**
+**Sound Detection and Bluetooth Alerts Transmission**
 ```cpp
 const int soundPin = 34;
 const int threshold = 3000;
@@ -230,7 +228,7 @@ if (soundLevel >= threshold) {
   }
 }
 ```
-If the sound level detected by the sound detection sensor module exceeds the defined threshold, it indicates the occurrence of a cooker whistle. The program confirms consistent sound readings (three consecutive detections) before sending the Bluetooth message. This reduces false triggers due to ambient noise.
+If the sound level detected by the sound detection sensor module exceeds the predefined threshold, it indicates the occurrence of a cooker whistle. The program confirms consistent sound readings (three consecutive detections) before sending the Bluetooth message. This reduces false triggers due to ambient noise.
 
 ---
 
@@ -247,4 +245,4 @@ This project was developed between May 2024 and July 2024 as part of my internsh
 ---
 
 ## License
-This project is licensed under the terms specified in the ``LICENSE`` file **(MIT License)**.
+This project is licensed under the terms specified in the [LICENSE](#LICENSE) file **(MIT License)**.
