@@ -51,10 +51,10 @@ This section lists the necessary hardware components used to develop this protot
 ## Software Requirements
 To set up and run this project, ensure the following software tools and libraries are installed:
 - **Arduino IDE:** Version 1.8x or later (or Arduino CLI)
-- **Operating System:** Windows/ macOS / Linux
+- **Operating System:** Windows / macOS / Linux
 - **Required Board Package:** ESP32 Board Package (for programming the ESP32 Pico Kit). It can be installed by following the steps below: 
   - Open ``Arduino IDE`` → ``Preferences``.
-  - Add the following URL to the _Additional Board Manager URLs_:
+  - Add the following URL to the _Additional Board Manager URLs_ field:
     [https://dl.espressif.com/dl/package_esp32_index.json](https://dl.espressif.com/dl/package_esp32_index.json)
   - Then, open ``Tools`` → ``Board`` → ``Boards Manager``.
   - Search for ESP32 by _Espressif Systems_ and install it.
@@ -91,7 +91,7 @@ In order to implement the prototype and verify its functionalities, follow the s
     | 22                          |                               | SCL/SCK           |
     | 3V3                         |                               | VCC               |
     | GND                         |                               | GND               |
-    | 21                          | RTC Module (DS3231)           | SDA               |
+    | 21                          | RTC Module                    | SDA               |
     | 22                          |                               | SCL/SCK           |
     | 3V3                         |                               | VCC               |
     | GND                         |                               | GND               |
@@ -158,7 +158,7 @@ display.setCursor(0, 0);
 display.print(timeString);
 display.display();
 ```
-The OLED continuously updates the displayed time as the user adjusts hours and minutes. The *Reset* button allows clearing or returning to the initialization state (displaying "Hello").
+The OLED display continuously updates the displayed time as the user adjusts hours and minutes. The *Reset* button allows clearing or returning to the initialization state.
 
 **(B) Timer and Deep Sleep Setup**
 ```cpp
@@ -166,12 +166,11 @@ if (digitalRead(setButton) == LOW) {
   DateTime now = rtc.now();
   DateTime timerTime = now + TimeSpan(0, hours, minutes, 0);
   rtc.setAlarm1(timerTime, DS3231_A1_Minute);
-  
   esp_sleep_enable_ext0_wakeup(GPIO_NUM_14, 0);
   esp_deep_sleep_start();
 }
 ```
-When the *Set* button is pressed, the RTC module schedules a timer for the set duration. The ESP32 board then enters deep sleep mode to conserve power until the timer triggers, waking up through the interrupt pin (pin 14).
+In the *Timer* mode, when the *Set* button is pressed, the RTC module schedules a timer for the set duration. The ESP32 board then enters deep sleep mode to conserve power until the timer triggers, waking up through the interrupt pin (pin 14).
 
 **(C) Receiving Notification via Bluetooth**
 ```cpp
@@ -205,7 +204,6 @@ if (!SerialBT.begin("ESP32test", true)) {
   Serial.println("========== serialBT failed!");
   abort();
 }
-
 SerialBT.discoverAsync([](BTAdvertisedDevice *pDevice) {
   Serial.printf(">>>>>>>>>>>Found a new device asynchronously: %s\n", pDevice->toString().c_str());
 });
@@ -232,7 +230,7 @@ if (soundLevel >= threshold) {
   }
 }
 ```
-If the sound level detected by the sound detection sensor module exceeds the defined threshold, it indicates the occurrence of a cooker whistle. The program confirms consistent sound readings (three consecutive detections) before sending the Bluetooth message. This reduces false triggers due to ambient noise.
+If the sound level detected by the sound detection sensor module exceeds the predefined threshold, it indicates the occurrence of a cooker whistle. The program confirms consistent sound readings (three consecutive detections) before sending the Bluetooth message. This reduces false triggers due to ambient noise.
 
 ---
 
