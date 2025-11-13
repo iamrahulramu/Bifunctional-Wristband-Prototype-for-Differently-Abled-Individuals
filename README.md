@@ -1,33 +1,35 @@
 # Bifunctional Wristband Prototype for Differently Abled Individuals
 
+<p align="justify">
 This bifunctional wristband prototype assists differently abled individuals by providing two key functionalities: a Vibrating Timer (alerts the user through vibrations once a set duration has elapsed) and a Cooking Status Notifier (alerts the user through vibrations when a cooker whistle is detected). The system uses two ESP32 Pico Kit boards - one acting as the main controller for the wristband and the other for the sound detector device.
+</p>
 
 ---
 
 ## Table of Contents
-- [Bifunctional Wristband Prototype for Differently Abled Individuals](#bifunctional-wristband-prototype-for-differently-abled-individuals)
-  - [Table of Contents](#table-of-contents)
-  - [Project Overview](#project-overview)
-  - [Hardware Components](#hardware-components)
-  - [Software Requirements](#software-requirements)
-  - [Implementation Steps](#implementation-steps)
-    - [On the Wristband ESP32 Board](#on-the-wristband-esp32-board)
-    - [On the Detector ESP32 Board](#on-the-detector-esp32-board)
-    - [Testing the Prototype](#testing-the-prototype)
-  - [Implementation Description](#implementation-description)
-    - [Wristband ESP32 Implementation](#wristband-esp32-implementation)
-    - [Detector Device ESP32 Implementation](#detector-device-esp32-implementation)
-  - [Future Improvements](#future-improvements)
-  - [Acknowledgements](#acknowledgements)
-  - [License](#license)
+- [Project Overview](#project-overview)
+- [Hardware Components](#hardware-components)
+- [Software Requirements](#software-requirements)
+- [Implementation Steps](#implementation-steps)
+  - [On the Wristband ESP32 Board](#on-the-wristband-esp32-board)
+  - [On the Detector ESP32 Board](#on-the-detector-esp32-board)
+  - [Testing the Prototype](#testing-the-prototype)
+- [Implementation Description](#implementation-description)
+  - [Wristband ESP32 Implementation](#wristband-esp32-implementation)
+  - [Detector Device ESP32 Implementation](#detector-device-esp32-implementation)
+- [Future Improvements](#future-improvements)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
 
 ---
 
 ## Project Overview
+<div align="justify">
 This project presents a bifunctional wristband prototype aimed at supporting differently abled individuals, particularly those with hearing impairments, in their daily activities. The prototype can operate in two modes:
 
 - **Timer Mode:** The user can set a desired time duration using the pushbuttons on the wristband. Once set, the ESP32 enters deep sleep mode to conserve energy. When the timer ends, the miniature vibration motor inside the wristband activates, alerting the user through vibrations.
 - **Notifier Mode:** A second ESP32 device (detector) is placed near the cooker to detect whistle sounds using a sound detection sensor module. When a whistle is detected, a Bluetooth message is sent to the wristband, which activates the vibration motor and displays the cumulative number of whistles detected on the OLED screen.
+</div>
 
 ---
 
@@ -35,7 +37,7 @@ This project presents a bifunctional wristband prototype aimed at supporting dif
 This section lists the necessary hardware components used to develop this prototype, along with their functionalities.
 
 | Component                              | Function                                                                |
-|----------------------------------------|-------------------------------------------------------------------------|
+|:--------------------------------------:|:-----------------------------------------------------------------------:|
 | ESP32 Pico Kit (x2)                    | Main controller for both the wristband and the detector                 |
 | OLED Display Module (128 x 32, I2C)    | To display necessary information to the user                            |
 | DS3231 RTC Module                      | To maintain accurate real-time tracking for timer operations            |
@@ -84,7 +86,7 @@ In order to implement the prototype and verify its functionalities, follow the s
 1. Connect the peripherals - OLED display module, RTC module, miniature vibration motor and pushbuttons - to the ESP32 Pico Kit (used as the wristband controller) according to the pin configuration provided below:
 
     | ESP32 Pin                   | Connected Component           | Component Pin     |
-    | --------------------------- | ----------------------------- | ----------------- |
+    |:---------------------------:|:-----------------------------:|:-----------------:|
     | 21                          | OLED Display Module (SSD1306) | SDA               |
     | 22                          |                               | SCL/SCK           |
     | 3V3                         |                               | VCC               |
@@ -110,7 +112,7 @@ In order to implement the prototype and verify its functionalities, follow the s
 1. Connect the sound detection sensor module to the ESP32 Pico Kit (used for the detector device) as described below:
 
     | ESP32 Pin                   | Connected Component           | Component Pin     |
-    | --------------------------- | ----------------------------- | ----------------- |
+    |:---------------------------:|:-----------------------------:|:-----------------:|
     | 34                          | Sound Detection Sensor Module | OUT               |
     | 5V                          |                               | VCC               |
     | GND                         |                               | GND               |
@@ -147,7 +149,7 @@ The wristband ESP32 code integrates three core functions:
 - Setting timer using the DS3231 RTC module and pushbuttons.
 - Setting up Bluetooth communication for receiving alerts from the detector device.
 
-**Display Update and Reset**
+**(A) Display Update and Reset**
 ```cpp
 display.clearDisplay();
 char timeString[6];
@@ -158,7 +160,7 @@ display.display();
 ```
 The OLED continuously updates the displayed time as the user adjusts hours and minutes. The *Reset* button allows clearing or returning to the initialization state (displaying "Hello").
 
-**Timer and Deep Sleep Setup**
+**(B) Timer and Deep Sleep Setup**
 ```cpp
 if (digitalRead(setButton) == LOW) {
   DateTime now = rtc.now();
@@ -171,7 +173,7 @@ if (digitalRead(setButton) == LOW) {
 ```
 When the *Set* button is pressed, the RTC module schedules a timer for the set duration. The ESP32 board then enters deep sleep mode to conserve power until the timer triggers, waking up through the interrupt pin (pin 14).
 
-**Receiving Notification via Bluetooth**
+**(C) Receiving Notification via Bluetooth**
 ```cpp
 void bluetoothNotification(){
   SerialBT.begin("ESP32receiver");
@@ -194,7 +196,7 @@ In the *Notifier* mode, the wristband waits for a Bluetooth message from the det
 
 This script continuously monitors sound levels using a sound detection sensor module and triggers a Bluetooth message when a whistle-like sound is detected.
 
-**Bluetooth Initialization and Discovery**
+**(A) Bluetooth Initialization and Discovery**
 ```cpp
 #include <BluetoothSerial.h>
 BluetoothSerial SerialBT;
@@ -210,7 +212,7 @@ SerialBT.discoverAsync([](BTAdvertisedDevice *pDevice) {
 ```
 The Bluetooth module runs in master mode, scanning for and automatically connecting to the wristband ESP32 board. The ``discoverAsync()`` function performs asynchronous device scanning, listing nearby ESP32 Bluetooth addresses.
 
-**Sound Detection and Bluetooth Alert Transmission**
+**(B) Sound Detection and Bluetooth Alert Transmission**
 ```cpp
 const int soundPin = 34;
 const int threshold = 3000;
@@ -235,16 +237,21 @@ If the sound level detected by the sound detection sensor module exceeds the def
 ---
 
 ## Future Improvements
+<div align="justify">
 While the current implementation successfully performs the intended functionalities, a few enhancements can further improve its usability and efficiency:
+
 - **Enhanced Cooker Whistle Detection Logic:** In the current design, loudness is the primary parameter used to detect cooker whistles. More sophisticated techniques, such as frequency spectrum analysis, can be implemented to improve the accuracy and reliability of whistle detection.
 - **Upgraded Wireless Communication:** Since the range and data throughput of Bluetooth are limited, replacing Bluetooth with Wi-Fi would enable longer transmission distances and more stable communication between the wristband and the detector device. 
+</div>
 
 ---
 
 ## Acknowledgements
-This project was developed between May 2024 and July 2024 as part of my internship at the Department of Electronics and Communication Engineering, SSN College of Engineering, Chennai, Tamil Nadu.
+<p align="justify">
+This project was developed between May 2024 and July 2024 as part of my internship at the Department of Electronics and Communication Engineering at SSN College of Engineering, Chennai, Tamil Nadu. I would like to express my sincere gratitude to my supervisor, Dr. Kaythry Pandurangan, for her guidance and support throughout the project.
+</p>
 
 ---
 
 ## License
-This project is licensed under the terms specified in the ``LICENSE`` file **(MIT License)**.
+This project is licensed under the terms specified in the [LICENSE](LICENSE) file **(MIT License)**.
