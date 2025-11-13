@@ -1,8 +1,5 @@
 # Bifunctional Wristband Prototype for Differently Abled Individuals
-
-<p align="justify">
 This bifunctional wristband prototype assists differently abled individuals by providing two key functionalities: a Vibrating Timer (alerts the user through vibrations once a set duration has elapsed) and a Cooking Status Notifier (alerts the user through vibrations when a cooker whistle is detected). The system uses two ESP32 Pico Kit boards - one acting as the main controller for the wristband and the other for the sound detector device.
-</p>
 
 ---
 
@@ -24,12 +21,9 @@ This bifunctional wristband prototype assists differently abled individuals by p
 ---
 
 ## Project Overview
-<div align="justify">
 This project presents a bifunctional wristband prototype aimed at supporting differently abled individuals, particularly those with hearing impairments, in their daily activities. The prototype can operate in two modes:
-
 - **Timer Mode:** The user can set a desired time duration using the pushbuttons on the wristband. Once set, the ESP32 enters deep sleep mode to conserve energy. When the timer ends, the miniature vibration motor inside the wristband activates, alerting the user through vibrations.
 - **Notifier Mode:** A second ESP32 device (detector) is placed near the cooker to detect whistle sounds using a sound detection sensor module. When a whistle is detected, a Bluetooth message is sent to the wristband, which activates the vibration motor and displays the cumulative number of whistles detected on the OLED screen.
-</div>
 
 ---
 
@@ -235,19 +229,15 @@ If the sound level detected by the sound detection sensor module exceeds the pre
 ---
 
 ## Future Improvements
-<div align="justify">
 While the current implementation successfully performs the intended functionalities, a few enhancements can further improve its usability and efficiency:
 
 - **Enhanced Cooker Whistle Detection Logic:** In the current design, loudness is the primary parameter used to detect cooker whistles. More sophisticated techniques, such as frequency spectrum analysis, can be implemented to improve the accuracy and reliability of whistle detection.
 - **Upgraded Wireless Communication:** Since the range and data throughput of Bluetooth are limited, replacing Bluetooth with Wi-Fi would enable longer transmission distances and more stable communication between the wristband and the detector device. 
-</div>
 
 ---
 
 ## Acknowledgements
-<p align="justify">
 This project was developed between May 2024 and July 2024 as part of my internship at the Department of Electronics and Communication Engineering at SSN College of Engineering, Chennai, Tamil Nadu. I would like to express my sincere gratitude to my supervisor, Dr. Kaythry Pandurangan, for her guidance and support throughout the project.
-</p>
 
 ---
 
